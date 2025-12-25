@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "QBTjUjr53bIFMmDpM3//1M/PnIz4D39tAP8I2goy+0gsq8SeK6RmwWvaDbCPWpwOODflge+v6onytrSKacDNvQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ACER\\RiderProjects\\EtlDslDemo\\EtlDslDemo\\EtlDslDemo.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ACER\\.nuget\\packages\\antlr4.runtime.standard\\4.13.1\\antlr4.runtime.standard.4.13.1.nupkg.sha512"
+  ],
+  "logs": []
+}
