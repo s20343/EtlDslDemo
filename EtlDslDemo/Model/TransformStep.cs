@@ -1,6 +1,7 @@
 ﻿namespace EtlDsl.Model;
 
-public class TransformStep : Step
+public class TransformStep
 {
-    public List<Operation> Operations { get; } = new();
+    public List<IOperation> Operations { get; set; } = new();
 }
+

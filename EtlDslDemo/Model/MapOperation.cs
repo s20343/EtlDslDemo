@@ -1,8 +1,8 @@
 ﻿namespace EtlDsl.Model;
 
-public class MapOperation : Operation
+public class MapOperation : IOperation
 {
-    public string Expression { get; set; } = "";
-    public string TargetColumn { get; set; } = "";
+    public string Expression { get; set; }
+    public string TargetColumn { get; set; }
     public DataType? TargetType { get; set; }
 }

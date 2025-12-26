@@ -1,4 +1,4 @@
-﻿product,quantity,price
-Apple,0,1
-Banana,0,0.5
-Orange,0,0
+﻿quantity,price,product
+10,12,WidgetA
+5,7,WidgetB
+8,3,WidgetA

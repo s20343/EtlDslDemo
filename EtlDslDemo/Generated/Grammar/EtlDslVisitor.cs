@@ -56,6 +56,72 @@ public interface IEtlDslVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitSourceType([NotNull] EtlDslParser.SourceTypeContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.targetIdentifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTargetIdentifier([NotNull] EtlDslParser.TargetIdentifierContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.inputstream"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitInputstream([NotNull] EtlDslParser.InputstreamContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.connector"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitConnector([NotNull] EtlDslParser.ConnectorContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.table"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTable([NotNull] EtlDslParser.TableContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.flatfile"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFlatfile([NotNull] EtlDslParser.FlatfileContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.regularFlatfile"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRegularFlatfile([NotNull] EtlDslParser.RegularFlatfileContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.fileFlatfile"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFileFlatfile([NotNull] EtlDslParser.FileFlatfileContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.typedExprList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTypedExprList([NotNull] EtlDslParser.TypedExprListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.typedExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTypedExpr([NotNull] EtlDslParser.TypedExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.typeOrNullList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTypeOrNullList([NotNull] EtlDslParser.TypeOrNullListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.typeOrNull"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTypeOrNull([NotNull] EtlDslParser.TypeOrNullContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="EtlDslParser.transform"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -67,36 +133,6 @@ public interface IEtlDslVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitTransformStatement([NotNull] EtlDslParser.TransformStatementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EtlDslParser.aggregateStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitAggregateStatement([NotNull] EtlDslParser.AggregateStatementContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EtlDslParser.targetIdentifier"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitTargetIdentifier([NotNull] EtlDslParser.TargetIdentifierContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EtlDslParser.groupByClause"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitGroupByClause([NotNull] EtlDslParser.GroupByClauseContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EtlDslParser.groupByItem"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitGroupByItem([NotNull] EtlDslParser.GroupByItemContext context);
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="EtlDslParser.aggregationFunction"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitAggregationFunction([NotNull] EtlDslParser.AggregationFunctionContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="EtlDslParser.mapStatement"/>.
 	/// </summary>
@@ -110,73 +146,209 @@ public interface IEtlDslVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitFilterStatement([NotNull] EtlDslParser.FilterStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EtlDslParser.load"/>.
+	/// Visit a parse tree produced by <see cref="EtlDslParser.aggregateStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitLoad([NotNull] EtlDslParser.LoadContext context);
+	Result VisitAggregateStatement([NotNull] EtlDslParser.AggregateStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EtlDslParser.targetType"/>.
+	/// Visit a parse tree produced by <see cref="EtlDslParser.distinctStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitTargetType([NotNull] EtlDslParser.TargetTypeContext context);
+	Result VisitDistinctStatement([NotNull] EtlDslParser.DistinctStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>QualifiedIdExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Visit a parse tree produced by <see cref="EtlDslParser.deleteDb"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitQualifiedIdExpr([NotNull] EtlDslParser.QualifiedIdExprContext context);
+	Result VisitDeleteDb([NotNull] EtlDslParser.DeleteDbContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>StringExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Visit a parse tree produced by <see cref="EtlDslParser.lookupObStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitStringExpr([NotNull] EtlDslParser.StringExprContext context);
+	Result VisitLookupObStatement([NotNull] EtlDslParser.LookupObStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>MulDivExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Visit a parse tree produced by <see cref="EtlDslParser.lookupDbStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitMulDivExpr([NotNull] EtlDslParser.MulDivExprContext context);
+	Result VisitLookupDbStatement([NotNull] EtlDslParser.LookupDbStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>IdExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Visit a parse tree produced by <see cref="EtlDslParser.selectStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitIdExpr([NotNull] EtlDslParser.IdExprContext context);
+	Result VisitSelectStatement([NotNull] EtlDslParser.SelectStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>NumberExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Visit a parse tree produced by <see cref="EtlDslParser.selectDbStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitNumberExpr([NotNull] EtlDslParser.NumberExprContext context);
+	Result VisitSelectDbStatement([NotNull] EtlDslParser.SelectDbStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Visit a parse tree produced by <see cref="EtlDslParser.correlateStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitCompareExpr([NotNull] EtlDslParser.CompareExprContext context);
+	Result VisitCorrelateStatement([NotNull] EtlDslParser.CorrelateStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>ParensExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Visit a parse tree produced by <see cref="EtlDslParser.synchronizedStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitParensExpr([NotNull] EtlDslParser.ParensExprContext context);
+	Result VisitSynchronizedStatement([NotNull] EtlDslParser.SynchronizedStatementContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>AddSubExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Visit a parse tree produced by <see cref="EtlDslParser.crossApplyStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAddSubExpr([NotNull] EtlDslParser.AddSubExprContext context);
+	Result VisitCrossApplyStatement([NotNull] EtlDslParser.CrossApplyStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.caOperation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCaOperation([NotNull] EtlDslParser.CaOperationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.lookupStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLookupStatement([NotNull] EtlDslParser.LookupStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.cache"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCache([NotNull] EtlDslParser.CacheContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.dbOperation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDbOperation([NotNull] EtlDslParser.DbOperationContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.inputTableOp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitInputTableOp([NotNull] EtlDslParser.InputTableOpContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.whereStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhereStatement([NotNull] EtlDslParser.WhereStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.includeStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIncludeStatement([NotNull] EtlDslParser.IncludeStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.orderbyStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOrderbyStatement([NotNull] EtlDslParser.OrderbyStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.assignmentList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAssignmentList([NotNull] EtlDslParser.AssignmentListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.assignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAssignment([NotNull] EtlDslParser.AssignmentContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.expressionList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpressionList([NotNull] EtlDslParser.ExpressionListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.expressionOp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpressionOp([NotNull] EtlDslParser.ExpressionOpContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.aggregationFunction"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAggregationFunction([NotNull] EtlDslParser.AggregationFunctionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.groupByClause"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitGroupByClause([NotNull] EtlDslParser.GroupByClauseContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.groupByItem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitGroupByItem([NotNull] EtlDslParser.GroupByItemContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpression([NotNull] EtlDslParser.ExpressionContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.logicalOrExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLogicalOrExpr([NotNull] EtlDslParser.LogicalOrExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.logicalAndExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLogicalAndExpr([NotNull] EtlDslParser.LogicalAndExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.logicalNotExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLogicalNotExpr([NotNull] EtlDslParser.LogicalNotExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.comparisonExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitComparisonExpr([NotNull] EtlDslParser.ComparisonExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.additiveExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAdditiveExpr([NotNull] EtlDslParser.AdditiveExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.multiplicativeExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMultiplicativeExpr([NotNull] EtlDslParser.MultiplicativeExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.unaryExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitUnaryExpr([NotNull] EtlDslParser.UnaryExprContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.atom"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAtom([NotNull] EtlDslParser.AtomContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="EtlDslParser.qualifiedIdentifier"/>.
 	/// </summary>
@@ -184,11 +356,29 @@ public interface IEtlDslVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitQualifiedIdentifier([NotNull] EtlDslParser.QualifiedIdentifierContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EtlDslParser.operator"/>.
+	/// Visit a parse tree produced by <see cref="EtlDslParser.load"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitOperator([NotNull] EtlDslParser.OperatorContext context);
+	Result VisitLoad([NotNull] EtlDslParser.LoadContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.outputstream"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOutputstream([NotNull] EtlDslParser.OutputstreamContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.outobject"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOutobject([NotNull] EtlDslParser.OutobjectContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.targetType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTargetType([NotNull] EtlDslParser.TargetTypeContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="EtlDslParser.type"/>.
 	/// </summary>

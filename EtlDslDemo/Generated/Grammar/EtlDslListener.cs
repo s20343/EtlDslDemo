@@ -71,6 +71,116 @@ public interface IEtlDslListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitSourceType([NotNull] EtlDslParser.SourceTypeContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.targetIdentifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTargetIdentifier([NotNull] EtlDslParser.TargetIdentifierContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.targetIdentifier"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTargetIdentifier([NotNull] EtlDslParser.TargetIdentifierContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.inputstream"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInputstream([NotNull] EtlDslParser.InputstreamContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.inputstream"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInputstream([NotNull] EtlDslParser.InputstreamContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.connector"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterConnector([NotNull] EtlDslParser.ConnectorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.connector"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitConnector([NotNull] EtlDslParser.ConnectorContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.table"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTable([NotNull] EtlDslParser.TableContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.table"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTable([NotNull] EtlDslParser.TableContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.flatfile"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFlatfile([NotNull] EtlDslParser.FlatfileContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.flatfile"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFlatfile([NotNull] EtlDslParser.FlatfileContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.regularFlatfile"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRegularFlatfile([NotNull] EtlDslParser.RegularFlatfileContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.regularFlatfile"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRegularFlatfile([NotNull] EtlDslParser.RegularFlatfileContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.fileFlatfile"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFileFlatfile([NotNull] EtlDslParser.FileFlatfileContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.fileFlatfile"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFileFlatfile([NotNull] EtlDslParser.FileFlatfileContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.typedExprList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTypedExprList([NotNull] EtlDslParser.TypedExprListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.typedExprList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTypedExprList([NotNull] EtlDslParser.TypedExprListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.typedExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTypedExpr([NotNull] EtlDslParser.TypedExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.typedExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTypedExpr([NotNull] EtlDslParser.TypedExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.typeOrNullList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTypeOrNullList([NotNull] EtlDslParser.TypeOrNullListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.typeOrNullList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTypeOrNullList([NotNull] EtlDslParser.TypeOrNullListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.typeOrNull"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTypeOrNull([NotNull] EtlDslParser.TypeOrNullContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.typeOrNull"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTypeOrNull([NotNull] EtlDslParser.TypeOrNullContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EtlDslParser.transform"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -90,56 +200,6 @@ public interface IEtlDslListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitTransformStatement([NotNull] EtlDslParser.TransformStatementContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.aggregateStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAggregateStatement([NotNull] EtlDslParser.AggregateStatementContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.aggregateStatement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAggregateStatement([NotNull] EtlDslParser.AggregateStatementContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.targetIdentifier"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterTargetIdentifier([NotNull] EtlDslParser.TargetIdentifierContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.targetIdentifier"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitTargetIdentifier([NotNull] EtlDslParser.TargetIdentifierContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.groupByClause"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterGroupByClause([NotNull] EtlDslParser.GroupByClauseContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.groupByClause"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitGroupByClause([NotNull] EtlDslParser.GroupByClauseContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.groupByItem"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterGroupByItem([NotNull] EtlDslParser.GroupByItemContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.groupByItem"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitGroupByItem([NotNull] EtlDslParser.GroupByItemContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.aggregationFunction"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAggregationFunction([NotNull] EtlDslParser.AggregationFunctionContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.aggregationFunction"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAggregationFunction([NotNull] EtlDslParser.AggregationFunctionContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EtlDslParser.mapStatement"/>.
 	/// </summary>
@@ -161,121 +221,345 @@ public interface IEtlDslListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitFilterStatement([NotNull] EtlDslParser.FilterStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.load"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.aggregateStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterLoad([NotNull] EtlDslParser.LoadContext context);
+	void EnterAggregateStatement([NotNull] EtlDslParser.AggregateStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.load"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.aggregateStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitLoad([NotNull] EtlDslParser.LoadContext context);
+	void ExitAggregateStatement([NotNull] EtlDslParser.AggregateStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.targetType"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.distinctStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterTargetType([NotNull] EtlDslParser.TargetTypeContext context);
+	void EnterDistinctStatement([NotNull] EtlDslParser.DistinctStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.targetType"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.distinctStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitTargetType([NotNull] EtlDslParser.TargetTypeContext context);
+	void ExitDistinctStatement([NotNull] EtlDslParser.DistinctStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>QualifiedIdExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.deleteDb"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterQualifiedIdExpr([NotNull] EtlDslParser.QualifiedIdExprContext context);
+	void EnterDeleteDb([NotNull] EtlDslParser.DeleteDbContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>QualifiedIdExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.deleteDb"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitQualifiedIdExpr([NotNull] EtlDslParser.QualifiedIdExprContext context);
+	void ExitDeleteDb([NotNull] EtlDslParser.DeleteDbContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>StringExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.lookupObStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterStringExpr([NotNull] EtlDslParser.StringExprContext context);
+	void EnterLookupObStatement([NotNull] EtlDslParser.LookupObStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>StringExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.lookupObStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitStringExpr([NotNull] EtlDslParser.StringExprContext context);
+	void ExitLookupObStatement([NotNull] EtlDslParser.LookupObStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>MulDivExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.lookupDbStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterMulDivExpr([NotNull] EtlDslParser.MulDivExprContext context);
+	void EnterLookupDbStatement([NotNull] EtlDslParser.LookupDbStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>MulDivExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.lookupDbStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitMulDivExpr([NotNull] EtlDslParser.MulDivExprContext context);
+	void ExitLookupDbStatement([NotNull] EtlDslParser.LookupDbStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>IdExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.selectStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterIdExpr([NotNull] EtlDslParser.IdExprContext context);
+	void EnterSelectStatement([NotNull] EtlDslParser.SelectStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>IdExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.selectStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitIdExpr([NotNull] EtlDslParser.IdExprContext context);
+	void ExitSelectStatement([NotNull] EtlDslParser.SelectStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>NumberExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.selectDbStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterNumberExpr([NotNull] EtlDslParser.NumberExprContext context);
+	void EnterSelectDbStatement([NotNull] EtlDslParser.SelectDbStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>NumberExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.selectDbStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitNumberExpr([NotNull] EtlDslParser.NumberExprContext context);
+	void ExitSelectDbStatement([NotNull] EtlDslParser.SelectDbStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.correlateStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterCompareExpr([NotNull] EtlDslParser.CompareExprContext context);
+	void EnterCorrelateStatement([NotNull] EtlDslParser.CorrelateStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.correlateStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitCompareExpr([NotNull] EtlDslParser.CompareExprContext context);
+	void ExitCorrelateStatement([NotNull] EtlDslParser.CorrelateStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>ParensExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.synchronizedStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterParensExpr([NotNull] EtlDslParser.ParensExprContext context);
+	void EnterSynchronizedStatement([NotNull] EtlDslParser.SynchronizedStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>ParensExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.synchronizedStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitParensExpr([NotNull] EtlDslParser.ParensExprContext context);
+	void ExitSynchronizedStatement([NotNull] EtlDslParser.SynchronizedStatementContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>AddSubExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.crossApplyStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterAddSubExpr([NotNull] EtlDslParser.AddSubExprContext context);
+	void EnterCrossApplyStatement([NotNull] EtlDslParser.CrossApplyStatementContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>AddSubExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.crossApplyStatement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitAddSubExpr([NotNull] EtlDslParser.AddSubExprContext context);
+	void ExitCrossApplyStatement([NotNull] EtlDslParser.CrossApplyStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.caOperation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCaOperation([NotNull] EtlDslParser.CaOperationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.caOperation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCaOperation([NotNull] EtlDslParser.CaOperationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.lookupStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLookupStatement([NotNull] EtlDslParser.LookupStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.lookupStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLookupStatement([NotNull] EtlDslParser.LookupStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.cache"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCache([NotNull] EtlDslParser.CacheContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.cache"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCache([NotNull] EtlDslParser.CacheContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.dbOperation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDbOperation([NotNull] EtlDslParser.DbOperationContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.dbOperation"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDbOperation([NotNull] EtlDslParser.DbOperationContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.inputTableOp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInputTableOp([NotNull] EtlDslParser.InputTableOpContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.inputTableOp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInputTableOp([NotNull] EtlDslParser.InputTableOpContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.whereStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWhereStatement([NotNull] EtlDslParser.WhereStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.whereStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWhereStatement([NotNull] EtlDslParser.WhereStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.includeStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIncludeStatement([NotNull] EtlDslParser.IncludeStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.includeStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIncludeStatement([NotNull] EtlDslParser.IncludeStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.orderbyStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOrderbyStatement([NotNull] EtlDslParser.OrderbyStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.orderbyStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOrderbyStatement([NotNull] EtlDslParser.OrderbyStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.assignmentList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAssignmentList([NotNull] EtlDslParser.AssignmentListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.assignmentList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAssignmentList([NotNull] EtlDslParser.AssignmentListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.assignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAssignment([NotNull] EtlDslParser.AssignmentContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.assignment"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAssignment([NotNull] EtlDslParser.AssignmentContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.expressionList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterExpressionList([NotNull] EtlDslParser.ExpressionListContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.expressionList"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitExpressionList([NotNull] EtlDslParser.ExpressionListContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.expressionOp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterExpressionOp([NotNull] EtlDslParser.ExpressionOpContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.expressionOp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitExpressionOp([NotNull] EtlDslParser.ExpressionOpContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.aggregationFunction"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAggregationFunction([NotNull] EtlDslParser.AggregationFunctionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.aggregationFunction"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAggregationFunction([NotNull] EtlDslParser.AggregationFunctionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.groupByClause"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterGroupByClause([NotNull] EtlDslParser.GroupByClauseContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.groupByClause"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitGroupByClause([NotNull] EtlDslParser.GroupByClauseContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.groupByItem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterGroupByItem([NotNull] EtlDslParser.GroupByItemContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.groupByItem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitGroupByItem([NotNull] EtlDslParser.GroupByItemContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterExpression([NotNull] EtlDslParser.ExpressionContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitExpression([NotNull] EtlDslParser.ExpressionContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.logicalOrExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLogicalOrExpr([NotNull] EtlDslParser.LogicalOrExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.logicalOrExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLogicalOrExpr([NotNull] EtlDslParser.LogicalOrExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.logicalAndExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLogicalAndExpr([NotNull] EtlDslParser.LogicalAndExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.logicalAndExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLogicalAndExpr([NotNull] EtlDslParser.LogicalAndExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.logicalNotExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLogicalNotExpr([NotNull] EtlDslParser.LogicalNotExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.logicalNotExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLogicalNotExpr([NotNull] EtlDslParser.LogicalNotExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.comparisonExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterComparisonExpr([NotNull] EtlDslParser.ComparisonExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.comparisonExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitComparisonExpr([NotNull] EtlDslParser.ComparisonExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.additiveExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAdditiveExpr([NotNull] EtlDslParser.AdditiveExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.additiveExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAdditiveExpr([NotNull] EtlDslParser.AdditiveExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.multiplicativeExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMultiplicativeExpr([NotNull] EtlDslParser.MultiplicativeExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.multiplicativeExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMultiplicativeExpr([NotNull] EtlDslParser.MultiplicativeExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.unaryExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterUnaryExpr([NotNull] EtlDslParser.UnaryExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.unaryExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitUnaryExpr([NotNull] EtlDslParser.UnaryExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.atom"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAtom([NotNull] EtlDslParser.AtomContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.atom"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAtom([NotNull] EtlDslParser.AtomContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EtlDslParser.qualifiedIdentifier"/>.
 	/// </summary>
@@ -287,15 +571,45 @@ public interface IEtlDslListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitQualifiedIdentifier([NotNull] EtlDslParser.QualifiedIdentifierContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.operator"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.load"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterOperator([NotNull] EtlDslParser.OperatorContext context);
+	void EnterLoad([NotNull] EtlDslParser.LoadContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.operator"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.load"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitOperator([NotNull] EtlDslParser.OperatorContext context);
+	void ExitLoad([NotNull] EtlDslParser.LoadContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.outputstream"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOutputstream([NotNull] EtlDslParser.OutputstreamContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.outputstream"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOutputstream([NotNull] EtlDslParser.OutputstreamContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.outobject"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOutobject([NotNull] EtlDslParser.OutobjectContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.outobject"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOutobject([NotNull] EtlDslParser.OutobjectContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.targetType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTargetType([NotNull] EtlDslParser.TargetTypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.targetType"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTargetType([NotNull] EtlDslParser.TargetTypeContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EtlDslParser.type"/>.
 	/// </summary>

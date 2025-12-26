@@ -1,6 +1,6 @@
 ﻿namespace EtlDsl.Model;
 
-public class FilterOperation : Operation
+public class FilterOperation : IOperation
 {
-    public string Condition { get; set; } = "";
+    public string Condition { get; set; }
 }

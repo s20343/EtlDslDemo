@@ -17,3 +17,4 @@ C:\Users\ACER\RiderProjects\EtlDslDemo\EtlDslDemo\obj\Debug\net8.0\EtlDslDemo.ge
 C:\Users\ACER\RiderProjects\EtlDslDemo\EtlDslDemo\obj\Debug\net8.0\ref\EtlDslDemo.dll
 C:\Users\ACER\RiderProjects\EtlDslDemo\EtlDslDemo\bin\Debug\net8.0\Data\sales.csv
 C:\Users\ACER\RiderProjects\EtlDslDemo\EtlDslDemo\bin\Debug\net8.0\Data\discount.csv
+C:\Users\ACER\RiderProjects\EtlDslDemo\EtlDslDemo\obj\Debug\net8.0\EtlDslDemo.sourcelink.json

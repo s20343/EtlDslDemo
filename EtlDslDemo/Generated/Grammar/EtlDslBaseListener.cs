@@ -84,6 +84,138 @@ public partial class EtlDslBaseListener : IEtlDslListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSourceType([NotNull] EtlDslParser.SourceTypeContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.targetIdentifier"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTargetIdentifier([NotNull] EtlDslParser.TargetIdentifierContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.targetIdentifier"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTargetIdentifier([NotNull] EtlDslParser.TargetIdentifierContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.inputstream"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterInputstream([NotNull] EtlDslParser.InputstreamContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.inputstream"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitInputstream([NotNull] EtlDslParser.InputstreamContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.connector"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterConnector([NotNull] EtlDslParser.ConnectorContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.connector"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitConnector([NotNull] EtlDslParser.ConnectorContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.table"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTable([NotNull] EtlDslParser.TableContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.table"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTable([NotNull] EtlDslParser.TableContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.flatfile"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFlatfile([NotNull] EtlDslParser.FlatfileContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.flatfile"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFlatfile([NotNull] EtlDslParser.FlatfileContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.regularFlatfile"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRegularFlatfile([NotNull] EtlDslParser.RegularFlatfileContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.regularFlatfile"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRegularFlatfile([NotNull] EtlDslParser.RegularFlatfileContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.fileFlatfile"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFileFlatfile([NotNull] EtlDslParser.FileFlatfileContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.fileFlatfile"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFileFlatfile([NotNull] EtlDslParser.FileFlatfileContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.typedExprList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTypedExprList([NotNull] EtlDslParser.TypedExprListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.typedExprList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTypedExprList([NotNull] EtlDslParser.TypedExprListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.typedExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTypedExpr([NotNull] EtlDslParser.TypedExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.typedExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTypedExpr([NotNull] EtlDslParser.TypedExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.typeOrNullList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTypeOrNullList([NotNull] EtlDslParser.TypeOrNullListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.typeOrNullList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTypeOrNullList([NotNull] EtlDslParser.TypeOrNullListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.typeOrNull"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTypeOrNull([NotNull] EtlDslParser.TypeOrNullContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.typeOrNull"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTypeOrNull([NotNull] EtlDslParser.TypeOrNullContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="EtlDslParser.transform"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -107,66 +239,6 @@ public partial class EtlDslBaseListener : IEtlDslListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTransformStatement([NotNull] EtlDslParser.TransformStatementContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.aggregateStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAggregateStatement([NotNull] EtlDslParser.AggregateStatementContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.aggregateStatement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAggregateStatement([NotNull] EtlDslParser.AggregateStatementContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.targetIdentifier"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterTargetIdentifier([NotNull] EtlDslParser.TargetIdentifierContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.targetIdentifier"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitTargetIdentifier([NotNull] EtlDslParser.TargetIdentifierContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.groupByClause"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterGroupByClause([NotNull] EtlDslParser.GroupByClauseContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.groupByClause"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitGroupByClause([NotNull] EtlDslParser.GroupByClauseContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.groupByItem"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterGroupByItem([NotNull] EtlDslParser.GroupByItemContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.groupByItem"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitGroupByItem([NotNull] EtlDslParser.GroupByItemContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.aggregationFunction"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAggregationFunction([NotNull] EtlDslParser.AggregationFunctionContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.aggregationFunction"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAggregationFunction([NotNull] EtlDslParser.AggregationFunctionContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EtlDslParser.mapStatement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -192,141 +264,413 @@ public partial class EtlDslBaseListener : IEtlDslListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitFilterStatement([NotNull] EtlDslParser.FilterStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.load"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.aggregateStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterLoad([NotNull] EtlDslParser.LoadContext context) { }
+	public virtual void EnterAggregateStatement([NotNull] EtlDslParser.AggregateStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.load"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.aggregateStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitLoad([NotNull] EtlDslParser.LoadContext context) { }
+	public virtual void ExitAggregateStatement([NotNull] EtlDslParser.AggregateStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.targetType"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.distinctStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterTargetType([NotNull] EtlDslParser.TargetTypeContext context) { }
+	public virtual void EnterDistinctStatement([NotNull] EtlDslParser.DistinctStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.targetType"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.distinctStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitTargetType([NotNull] EtlDslParser.TargetTypeContext context) { }
+	public virtual void ExitDistinctStatement([NotNull] EtlDslParser.DistinctStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>QualifiedIdExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.deleteDb"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterQualifiedIdExpr([NotNull] EtlDslParser.QualifiedIdExprContext context) { }
+	public virtual void EnterDeleteDb([NotNull] EtlDslParser.DeleteDbContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>QualifiedIdExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.deleteDb"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitQualifiedIdExpr([NotNull] EtlDslParser.QualifiedIdExprContext context) { }
+	public virtual void ExitDeleteDb([NotNull] EtlDslParser.DeleteDbContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>StringExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.lookupObStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterStringExpr([NotNull] EtlDslParser.StringExprContext context) { }
+	public virtual void EnterLookupObStatement([NotNull] EtlDslParser.LookupObStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>StringExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.lookupObStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitStringExpr([NotNull] EtlDslParser.StringExprContext context) { }
+	public virtual void ExitLookupObStatement([NotNull] EtlDslParser.LookupObStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>MulDivExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.lookupDbStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterMulDivExpr([NotNull] EtlDslParser.MulDivExprContext context) { }
+	public virtual void EnterLookupDbStatement([NotNull] EtlDslParser.LookupDbStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>MulDivExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.lookupDbStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitMulDivExpr([NotNull] EtlDslParser.MulDivExprContext context) { }
+	public virtual void ExitLookupDbStatement([NotNull] EtlDslParser.LookupDbStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>IdExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.selectStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterIdExpr([NotNull] EtlDslParser.IdExprContext context) { }
+	public virtual void EnterSelectStatement([NotNull] EtlDslParser.SelectStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>IdExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.selectStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitIdExpr([NotNull] EtlDslParser.IdExprContext context) { }
+	public virtual void ExitSelectStatement([NotNull] EtlDslParser.SelectStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>NumberExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.selectDbStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNumberExpr([NotNull] EtlDslParser.NumberExprContext context) { }
+	public virtual void EnterSelectDbStatement([NotNull] EtlDslParser.SelectDbStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>NumberExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.selectDbStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNumberExpr([NotNull] EtlDslParser.NumberExprContext context) { }
+	public virtual void ExitSelectDbStatement([NotNull] EtlDslParser.SelectDbStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.correlateStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterCompareExpr([NotNull] EtlDslParser.CompareExprContext context) { }
+	public virtual void EnterCorrelateStatement([NotNull] EtlDslParser.CorrelateStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>CompareExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.correlateStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitCompareExpr([NotNull] EtlDslParser.CompareExprContext context) { }
+	public virtual void ExitCorrelateStatement([NotNull] EtlDslParser.CorrelateStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>ParensExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.synchronizedStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterParensExpr([NotNull] EtlDslParser.ParensExprContext context) { }
+	public virtual void EnterSynchronizedStatement([NotNull] EtlDslParser.SynchronizedStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>ParensExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.synchronizedStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitParensExpr([NotNull] EtlDslParser.ParensExprContext context) { }
+	public virtual void ExitSynchronizedStatement([NotNull] EtlDslParser.SynchronizedStatementContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>AddSubExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.crossApplyStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAddSubExpr([NotNull] EtlDslParser.AddSubExprContext context) { }
+	public virtual void EnterCrossApplyStatement([NotNull] EtlDslParser.CrossApplyStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>AddSubExpr</c>
-	/// labeled alternative in <see cref="EtlDslParser.expression"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.crossApplyStatement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAddSubExpr([NotNull] EtlDslParser.AddSubExprContext context) { }
+	public virtual void ExitCrossApplyStatement([NotNull] EtlDslParser.CrossApplyStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.caOperation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCaOperation([NotNull] EtlDslParser.CaOperationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.caOperation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCaOperation([NotNull] EtlDslParser.CaOperationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.lookupStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLookupStatement([NotNull] EtlDslParser.LookupStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.lookupStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLookupStatement([NotNull] EtlDslParser.LookupStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.cache"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCache([NotNull] EtlDslParser.CacheContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.cache"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCache([NotNull] EtlDslParser.CacheContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.dbOperation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDbOperation([NotNull] EtlDslParser.DbOperationContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.dbOperation"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDbOperation([NotNull] EtlDslParser.DbOperationContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.inputTableOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterInputTableOp([NotNull] EtlDslParser.InputTableOpContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.inputTableOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitInputTableOp([NotNull] EtlDslParser.InputTableOpContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.whereStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhereStatement([NotNull] EtlDslParser.WhereStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.whereStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhereStatement([NotNull] EtlDslParser.WhereStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.includeStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIncludeStatement([NotNull] EtlDslParser.IncludeStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.includeStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIncludeStatement([NotNull] EtlDslParser.IncludeStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.orderbyStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOrderbyStatement([NotNull] EtlDslParser.OrderbyStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.orderbyStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOrderbyStatement([NotNull] EtlDslParser.OrderbyStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.assignmentList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAssignmentList([NotNull] EtlDslParser.AssignmentListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.assignmentList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAssignmentList([NotNull] EtlDslParser.AssignmentListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.assignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAssignment([NotNull] EtlDslParser.AssignmentContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.assignment"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAssignment([NotNull] EtlDslParser.AssignmentContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.expressionList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExpressionList([NotNull] EtlDslParser.ExpressionListContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.expressionList"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExpressionList([NotNull] EtlDslParser.ExpressionListContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.expressionOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExpressionOp([NotNull] EtlDslParser.ExpressionOpContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.expressionOp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExpressionOp([NotNull] EtlDslParser.ExpressionOpContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.aggregationFunction"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAggregationFunction([NotNull] EtlDslParser.AggregationFunctionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.aggregationFunction"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAggregationFunction([NotNull] EtlDslParser.AggregationFunctionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.groupByClause"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGroupByClause([NotNull] EtlDslParser.GroupByClauseContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.groupByClause"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGroupByClause([NotNull] EtlDslParser.GroupByClauseContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.groupByItem"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterGroupByItem([NotNull] EtlDslParser.GroupByItemContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.groupByItem"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitGroupByItem([NotNull] EtlDslParser.GroupByItemContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterExpression([NotNull] EtlDslParser.ExpressionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitExpression([NotNull] EtlDslParser.ExpressionContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.logicalOrExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLogicalOrExpr([NotNull] EtlDslParser.LogicalOrExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.logicalOrExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLogicalOrExpr([NotNull] EtlDslParser.LogicalOrExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.logicalAndExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLogicalAndExpr([NotNull] EtlDslParser.LogicalAndExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.logicalAndExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLogicalAndExpr([NotNull] EtlDslParser.LogicalAndExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.logicalNotExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLogicalNotExpr([NotNull] EtlDslParser.LogicalNotExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.logicalNotExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLogicalNotExpr([NotNull] EtlDslParser.LogicalNotExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.comparisonExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterComparisonExpr([NotNull] EtlDslParser.ComparisonExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.comparisonExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitComparisonExpr([NotNull] EtlDslParser.ComparisonExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.additiveExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAdditiveExpr([NotNull] EtlDslParser.AdditiveExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.additiveExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAdditiveExpr([NotNull] EtlDslParser.AdditiveExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.multiplicativeExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMultiplicativeExpr([NotNull] EtlDslParser.MultiplicativeExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.multiplicativeExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMultiplicativeExpr([NotNull] EtlDslParser.MultiplicativeExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.unaryExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterUnaryExpr([NotNull] EtlDslParser.UnaryExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.unaryExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitUnaryExpr([NotNull] EtlDslParser.UnaryExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.atom"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterAtom([NotNull] EtlDslParser.AtomContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.atom"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitAtom([NotNull] EtlDslParser.AtomContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EtlDslParser.qualifiedIdentifier"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -340,17 +684,53 @@ public partial class EtlDslBaseListener : IEtlDslListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitQualifiedIdentifier([NotNull] EtlDslParser.QualifiedIdentifierContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.operator"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.load"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterOperator([NotNull] EtlDslParser.OperatorContext context) { }
+	public virtual void EnterLoad([NotNull] EtlDslParser.LoadContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.operator"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.load"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitOperator([NotNull] EtlDslParser.OperatorContext context) { }
+	public virtual void ExitLoad([NotNull] EtlDslParser.LoadContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.outputstream"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOutputstream([NotNull] EtlDslParser.OutputstreamContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.outputstream"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOutputstream([NotNull] EtlDslParser.OutputstreamContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.outobject"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOutobject([NotNull] EtlDslParser.OutobjectContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.outobject"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOutobject([NotNull] EtlDslParser.OutobjectContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.targetType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTargetType([NotNull] EtlDslParser.TargetTypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.targetType"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTargetType([NotNull] EtlDslParser.TargetTypeContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EtlDslParser.type"/>.
 	/// <para>The default implementation does nothing.</para>

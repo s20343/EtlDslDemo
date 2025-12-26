@@ -2,7 +2,6 @@
 
 public class ExtractStep
 {
-    public string SourceType { get; set; } = "";
-    public List<string> Sources { get; set; } = new();
-    public string Alias { get; set; } = "";
+    public string Alias { get; set; }               // e.g., benchPositionFileStream
+    public List<string> Sources { get; set; }      // CSV or FLATFILE paths
 }
