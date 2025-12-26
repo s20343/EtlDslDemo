@@ -1,226 +1,130 @@
-﻿using EtlDsl.Model;
+﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Misc; // 1️⃣ Required for Interval
+using EtlDsl.Model;
+using System;
 using System.Linq;
-namespace EtlDsl.Executor;
 
-public class EtlDslVisitorImpl : EtlDslBaseVisitor<object>
+namespace EtlDsl.Executor
 {
-    private readonly Pipeline _pipeline = new();
-    private TransformStep? _currentTransform;
-
-    public Pipeline Build(EtlDslParser.PipelineContext ctx)
+    public class EtlDslVisitorImpl : EtlDslBaseVisitor<object>
     {
-        
-        Visit(ctx);
-        return _pipeline;
-    }
+        private readonly Pipeline _pipeline = new();
+        private TransformStep? _currentTransform;
 
-    public override object VisitPipeline(EtlDslParser.PipelineContext ctx)
-    {
-        _pipeline.Name = ctx.IDENTIFIER().GetText();
-        _pipeline.Version = ctx.NUMBER().GetText();
-
-        Visit(ctx.extract());
-        Visit(ctx.transform());
-        Visit(ctx.load());
-
-        return _pipeline;
-    }
-
-    // ---------------- Extract ----------------
-    public override object VisitExtract(EtlDslParser.ExtractContext ctx)
-    {
-        var sources = ctx.sourceList().STRING()
-            .Select(s => TrimQuotes(s.GetText()))
-            .ToList();
-
-        _pipeline.Extract = new ExtractStep
+        public Pipeline Build(EtlDslParser.PipelineContext ctx)
         {
-            //SourceType = ctx.sourceType().GetText(),
-            Sources = sources,
-            Alias = ctx.targetIdentifier().GetText()
-        };
-        return null!;
-    }
-
-    // ---------------- Transform ----------------
-    public override object VisitTransform(EtlDslParser.TransformContext ctx)
-    {
-        _currentTransform = new TransformStep();
-        foreach (var stmt in ctx.transformStatement())
-        {
-            Visit(stmt);
+            Visit(ctx);
+            return _pipeline;
         }
-        _pipeline.Transform = _currentTransform;
-        return null!;
-    }
 
-    public override object VisitMapStatement(EtlDslParser.MapStatementContext ctx)
-    {
-        if (ctx.IF() != null)
+        public override object VisitPipeline(EtlDslParser.PipelineContext ctx)
         {
-            _currentTransform!.Operations.Add(new ConditionalMapOperation
+            _pipeline.Name = ctx.IDENTIFIER().GetText();
+            _pipeline.Version = ctx.NUMBER().GetText();
+
+            Visit(ctx.extract());
+            Visit(ctx.transform());
+            Visit(ctx.load());
+
+            return _pipeline;
+        }
+
+        // ---------------- Extract ----------------
+        public override object VisitExtract(EtlDslParser.ExtractContext ctx)
+        {
+            var sources = ctx.sourceList().STRING()
+                .Select(s => TrimQuotes(s.GetText()))
+                .ToList();
+
+            _pipeline.Extract = new ExtractStep
             {
-                Condition = ctx.expression(0).GetText(),
-                TrueExpression = ctx.expression(1).GetText(),
-                FalseExpression = ctx.expression(2).GetText(),
+                Sources = sources,
+                Alias = ctx.targetIdentifier().GetText()
+            };
+            return null!;
+        }
+
+        // ---------------- Transform ----------------
+        public override object VisitTransform(EtlDslParser.TransformContext ctx)
+        {
+            _currentTransform = new TransformStep();
+            _pipeline.Transform = _currentTransform;
+            foreach (var stmt in ctx.transformStatement())
+            {
+                Visit(stmt);
+            }
+            return null!;
+        }
+
+        public override object VisitFilterStatement(EtlDslParser.FilterStatementContext ctx)
+        {
+            // 2️⃣ FIX: Use GetFullText to preserve " AND ", " OR ", " NOT " spaces
+            _currentTransform!.Operations.Add(new FilterOperation
+            {
+                Condition = GetFullText(ctx.expression())
+            });
+            return null!;
+        }
+
+        public override object VisitMapStatement(EtlDslParser.MapStatementContext ctx)
+        {
+            if (ctx.IF() != null)
+            {
+                _currentTransform!.Operations.Add(new ConditionalMapOperation
+                {
+                    // 2️⃣ FIX: Use GetFullText here too
+                    Condition = GetFullText(ctx.expression(0)),
+                    TrueExpression = GetFullText(ctx.expression(1)),
+                    FalseExpression = GetFullText(ctx.expression(2)),
+                    TargetColumn = ctx.IDENTIFIER().GetText(),
+                    TargetType = ctx.type() != null ? ParseType(ctx.type().GetText()) : null
+                });
+                return null!;
+            }
+
+            _currentTransform!.Operations.Add(new MapOperation
+            {
+                Expression = GetFullText(ctx.expression(0)),
                 TargetColumn = ctx.IDENTIFIER().GetText(),
                 TargetType = ctx.type() != null ? ParseType(ctx.type().GetText()) : null
             });
             return null!;
         }
 
-        _currentTransform!.Operations.Add(new MapOperation
+        // ---------------- Load ----------------
+        public override object VisitLoad(EtlDslParser.LoadContext ctx)
         {
-            Expression = ctx.expression(0).GetText(),
-            TargetColumn = ctx.IDENTIFIER().GetText(),
-            TargetType = ctx.type() != null ? ParseType(ctx.type().GetText()) : null
-        });
-        return null!;
-    }
-
-    public override object VisitFilterStatement(EtlDslParser.FilterStatementContext ctx)
-    {
-        _currentTransform!.Operations.Add(new FilterOperation
-        {
-            Condition = ctx.expression().GetText()
-        });
-        return null!;
-    }
-
-    public override object VisitAggregateStatement(EtlDslParser.AggregateStatementContext ctx)
-    {
-        var agg = new AggregateOperation
-        {
-            Function = ctx.aggregationFunction().GetText(),
-            Expression = ctx.expression().GetText(),
-            TargetColumn = ctx.targetIdentifier().GetText(),
-            TargetType = ctx.type() != null ? ParseType(ctx.type().GetText()) : DataType.Decimal
-        };
-
-        if (ctx.groupByClause() != null)
-        {
-            foreach (var item in ctx.groupByClause().groupByItem())
+            _pipeline.Load = new LoadStep
             {
-                agg.GroupByColumns.Add(item.GetText());
-            }
+                TargetType = ctx.targetType().GetText(),
+                Target = TrimQuotes(ctx.STRING().GetText())
+            };
+            return null!;
         }
 
-        _currentTransform!.Operations.Add(agg);
-        return null!;
-    }
+        // ---------------- Helpers ----------------
 
-    public override object VisitDistinctStatement(EtlDslParser.DistinctStatementContext ctx)
-    {
-        _currentTransform!.Operations.Add(new DistinctOperation
+        // 3️⃣ THE MAGIC METHOD: Gets text with whitespace intact
+        private string GetFullText(ParserRuleContext context)
         {
-            Columns = ctx.expressionList().expression()
-                .Select(e => e.GetText())
-                .ToList()
-        });
-        return null!;
-    }
-
-    public override object VisitDeleteDb(EtlDslParser.DeleteDbContext ctx)
-    {
-        _currentTransform!.Operations.Add(new DeleteDbOperation
-        {
-            Condition = ctx.expression().GetText()
-        });
-        return null!;
-    }
-
-    public override object VisitLookupObStatement(EtlDslParser.LookupObStatementContext ctx)
-    {
-        var lookup = Visit(ctx.lookupStatement()) as LookupOperation;
-        _currentTransform!.Operations.Add(new LookupOperation { TargetTable = lookup!.TargetTable, On = lookup.On });
-        return null!;
-    }
-
-    public override object VisitLookupDbStatement(EtlDslParser.LookupDbStatementContext ctx)
-    {
-        var lookup = Visit(ctx.lookupStatement()) as LookupOperation;
-        _currentTransform!.Operations.Add(new LookupDbOperation { Lookup = lookup! });
-        return null!;
-    }
-
-    public override object VisitSelectStatement(EtlDslParser.SelectStatementContext ctx)
-    {
-        var select = new SelectOperation
-        {
-            Assignments = ctx.assignmentList().assignment()
-                .Select(a => (a.IDENTIFIER().GetText(), a.expression().GetText()))
-                .ToList()
-        };
-        _currentTransform!.Operations.Add(select);
-        return null!;
-    }
-
-    public override object VisitSelectDbStatement(EtlDslParser.SelectDbStatementContext ctx)
-    {
-        _currentTransform!.Operations.Add(new SelectDbOperation());
-        return null!;
-    }
-
-    public override object VisitCorrelateStatement(EtlDslParser.CorrelateStatementContext ctx)
-    {
-        _currentTransform!.Operations.Add(new CorrelateOperation());
-        return null!;
-    }
-
-    public override object VisitSynchronizedStatement(EtlDslParser.SynchronizedStatementContext ctx)
-    {
-        _currentTransform!.Operations.Add(new SynchronizedOperation());
-        return null!;
-    }
-
-    public override object VisitCrossApplyStatement(EtlDslParser.CrossApplyStatementContext ctx)
-    {
-        _currentTransform!.Operations.Add(new CrossApplyOperation());
-        return null!;
-    }
-
-    public override object VisitLookupStatement(EtlDslParser.LookupStatementContext ctx)
-    {
-        var lookup = new LookupOperation
-        {
-            TargetTable = ctx.expression().GetText(),
-            On = new List<(string Left, string Right)>()
-        };
-
-        var a = ctx.assignment(); // single AssignmentContext
-        if (a != null)
-        {
-            lookup.On.Add((Left: a.IDENTIFIER().GetText(), Right: a.expression().GetText()));
+            if (context == null) return "";
+            int a = context.Start.StartIndex;
+            int b = context.Stop.StopIndex;
+            var interval = new Interval(a, b);
+            return context.Start.InputStream.GetText(interval);
         }
 
-        return lookup;
+        private static DataType ParseType(string text) =>
+            text.Trim().ToLowerInvariant() switch
+            {
+                "int" => DataType.Int,
+                "num" => DataType.Int,
+                "double" => DataType.Decimal,
+                "string" => DataType.String,
+                "boolean" => DataType.Boolean,
+                _ => throw new Exception($"Unknown type {text}")
+            };
+
+        private static string TrimQuotes(string s) => s.Trim('"');
     }
-    
-
-    // ---------------- Load ----------------
-    public override object VisitLoad(EtlDslParser.LoadContext ctx)
-    {
-        _pipeline.Load = new LoadStep
-        {
-            TargetType = ctx.targetType().GetText(),
-            Target = TrimQuotes(ctx.STRING().GetText())
-        };
-        return null!;
-    }
-
-    // ---------------- Helpers ----------------
-    private static DataType ParseType(string text) =>
-        text.ToUpper() switch
-        {
-            "INT"     => DataType.Int,
-            "NUM"     => DataType.Int,        // match your lexer token
-            "DECIMAL" => DataType.Decimal,
-            "DOUBLE"  => DataType.Decimal,    // or DataType.Double if you have it
-            "STRING"  => DataType.String,
-            "BOOLEAN" => DataType.Boolean,
-            _ => throw new Exception($"Unknown type {text}")
-        };
-
-
-    private static string TrimQuotes(string s) => s.Trim('"');
 }

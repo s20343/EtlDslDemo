@@ -5,17 +5,15 @@ using EtlDsl.Executor; //java -jar "C:\Users\ACER\Downloads\antlr4-4.13.1-comple
 
 // ---------------- 1️⃣ Define your DSL ----------------
 var dsl = @"
-PIPELINE ArithmeticTest VERSION 1.0
+PIPELINE TestComplex VERSION 1.0
 
 EXTRACT CSV ""Data/sales.csv"" AS sales
 
 TRANSFORM {
-    MAP ""sales.quantity * sales.price"" TO TotalValue
-    MAP ""sales.quantity + 2"" TO AdjustedQty
+    FILTER (sales.quantity * 2 + sales.price > 150 AND NOT sales.quantity < 5) OR sales.price > 300
 }
 
-LOAD SQL ""FactArithmetic""
-
+LOAD SQL ""FactComplex""
 
 ";
 

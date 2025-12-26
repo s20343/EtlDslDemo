@@ -1,4 +1,5 @@
-﻿quantity,price,product
-10,12,WidgetA
-5,7,WidgetB
-8,3,WidgetA
+﻿id,quantity,price
+1,3,100
+2,6,200
+3,10,50
+4,8,300
