@@ -22,6 +22,8 @@ namespace EtlDsl.Executor
 
             Console.WriteLine($"Total rows read: {rows.Count}");
             Console.WriteLine("\n--- Applying Transformations ---");
+
+            // Row-level transformations (MAP, ConditionalMap, FILTER)
             var transformedRows = new List<Dictionary<string, object>>();
 
             foreach (var row in rows)
@@ -36,43 +38,90 @@ namespace EtlDsl.Executor
                         case MapOperation map:
                             context[map.TargetColumn] = ConvertType(Evaluate(map.Expression, context), map.TargetType);
                             break;
+
                         case ConditionalMapOperation cond:
                             bool condition = Convert.ToBoolean(Evaluate(cond.Condition, context));
                             var expr = condition ? cond.TrueExpression : cond.FalseExpression;
                             context[cond.TargetColumn] = ConvertType(Evaluate(expr, context), cond.TargetType);
                             break;
+
                         case FilterOperation filter:
-                            var result = Evaluate(filter.Condition, context);
-                            bool passes = Convert.ToBoolean(result);
-                            // Debug line to see what is happening
-                            // Console.WriteLine($"Debug: {filter.Condition} => {passes}"); 
+                            bool passes = Convert.ToBoolean(Evaluate(filter.Condition, context));
                             if (!passes) filtered = true;
                             break;
                     }
                     if (filtered) break;
                 }
 
-                if (!filtered) transformedRows.Add(context);
+                if (!filtered)
+                    transformedRows.Add(context);
             }
 
-            Console.WriteLine("\n--- ETL OUTPUT ---");
-            foreach (var row in transformedRows)
-                Console.WriteLine(string.Join(", ", row.Select(kv => $"{kv.Key}={kv.Value}")));
+            // ---------------- Aggregation ----------------
+            var aggregates = pipeline.Transform.Operations.OfType<AggregateOperation>().ToList();
+            if (aggregates.Any())
+            {
+                transformedRows = ApplyAggregations(transformedRows, aggregates);
+            }
+
+            // ---------------- Output ----------------
+            PrintRows(transformedRows);
         }
 
-        // ---------------- Expression Evaluator ----------------
+        private static List<Dictionary<string, object>> ApplyAggregations(
+            List<Dictionary<string, object>> rows,
+            List<AggregateOperation> aggregates)
+        {
+            var result = new List<Dictionary<string, object>>();
+
+            foreach (var agg in aggregates)
+            {
+                // Determine grouping
+                var groups = agg.GroupByColumns.Any()
+                    ? rows.GroupBy(r => string.Join("|", agg.GroupByColumns.Select(c => r[c])))
+                    : new[] { rows.GroupBy(_ => "ALL").First() };
+
+                foreach (var group in groups)
+                {
+                    var row = new Dictionary<string, object>();
+
+                    // Preserve GROUP BY columns
+                    foreach (var col in agg.GroupByColumns)
+                        row[col] = group.First()[col];
+
+                    // Evaluate the aggregate expression
+                    var values = group.Select(r => Convert.ToDecimal(Evaluate(agg.Expression, r))).ToList();
+
+                    decimal value = agg.Function switch
+                    {
+                        "SUM" => values.Sum(),
+                        "AVG" => values.Average(),
+                        "MIN" => values.Min(),
+                        "MAX" => values.Max(),
+                        _ => throw new Exception("Unknown aggregate function")
+                    };
+
+                    row[agg.TargetColumn] = ConvertType(value, agg.TargetType);
+                    result.Add(row);
+                }
+            }
+
+            return result;
+        }
+
+        // ---------------- Expression Evaluation ----------------
         public static object Evaluate(string expr, Dictionary<string, object> ctx)
         {
             expr = expr.Trim();
             if (string.IsNullOrEmpty(expr)) return null;
 
-            // 1. Parentheses
+            // Parentheses handling
             while (expr.Contains("("))
             {
                 int close = expr.IndexOf(')');
                 if (close == -1) break;
                 int open = expr.LastIndexOf('(', close);
-                if (open == -1) break; // Should not happen if balanced
+                if (open == -1) break;
 
                 var inner = expr.Substring(open + 1, close - open - 1);
                 var innerValue = Evaluate(inner, ctx);
@@ -87,29 +136,19 @@ namespace EtlDsl.Executor
                 expr = expr.Substring(0, open) + valStr + expr.Substring(close + 1);
             }
 
-            // 2. Logical OR (Look for spaces to avoid matching words like 'ORDER')
+            // Logical operators
             int orIndex = IndexOfTopLevelOperator(expr, " OR ");
             if (orIndex >= 0)
-            {
-                bool left = Convert.ToBoolean(Evaluate(expr[..orIndex], ctx));
-                if (left) return true;
-                return Convert.ToBoolean(Evaluate(expr[(orIndex + 4)..], ctx));
-            }
+                return Convert.ToBoolean(Evaluate(expr[..orIndex], ctx)) || Convert.ToBoolean(Evaluate(expr[(orIndex + 4)..], ctx));
 
-            // 3. Logical AND (Look for spaces to avoid matching words like 'BRAND')
             int andIndex = IndexOfTopLevelOperator(expr, " AND ");
             if (andIndex >= 0)
-            {
-                bool left = Convert.ToBoolean(Evaluate(expr[..andIndex], ctx));
-                if (!left) return false;
-                return Convert.ToBoolean(Evaluate(expr[(andIndex + 5)..], ctx));
-            }
+                return Convert.ToBoolean(Evaluate(expr[..andIndex], ctx)) && Convert.ToBoolean(Evaluate(expr[(andIndex + 5)..], ctx));
 
-            // 4. Logical NOT
             if (expr.StartsWith("NOT ", StringComparison.OrdinalIgnoreCase))
                 return !Convert.ToBoolean(Evaluate(expr.Substring(4), ctx));
 
-            // 5. Comparisons
+            // Comparisons
             string[] cmpOps = { "!=", ">=", "<=", "=", ">", "<" };
             foreach (var op in cmpOps)
             {
@@ -132,7 +171,7 @@ namespace EtlDsl.Executor
                 }
             }
 
-            // 6. Arithmetic
+            // Arithmetic operators (respecting precedence)
             int mul = IndexOfTopLevelOperator(expr, "*");
             if (mul >= 0) return Convert.ToDecimal(Evaluate(expr[..mul], ctx)) * Convert.ToDecimal(Evaluate(expr[(mul + 1)..], ctx));
             int div = IndexOfTopLevelOperator(expr, "/");
@@ -166,13 +205,10 @@ namespace EtlDsl.Executor
             if (token.Equals("NULL", StringComparison.OrdinalIgnoreCase)) return null;
             if (token.Equals("TRUE", StringComparison.OrdinalIgnoreCase)) return true;
             if (token.Equals("FALSE", StringComparison.OrdinalIgnoreCase)) return false;
-
             if (token.StartsWith("\"") && token.EndsWith("\"")) return token[1..^1];
             if (decimal.TryParse(token, NumberStyles.Any, CultureInfo.InvariantCulture, out var num)) return num;
-
             if (ctx.TryGetValue(token, out var value)) return value;
-
-            Console.WriteLine($"[Warn] Column '{token}' not found. Defaulting to 0/Null.");
+            Console.WriteLine($"[Warn] Column '{token}' not found. Defaulting to 0.");
             return 0;
         }
 
@@ -196,6 +232,7 @@ namespace EtlDsl.Executor
             };
         }
 
+        // ---------------- CSV Reading ----------------
         private static List<Dictionary<string, object>> ReadCsv(ExtractStep extract)
         {
             var result = new List<Dictionary<string, object>>();
@@ -204,6 +241,7 @@ namespace EtlDsl.Executor
                 if (!File.Exists(path)) continue;
                 var lines = File.ReadAllLines(path);
                 if (lines.Length < 2) continue;
+
                 var headers = lines[0].Split(',');
                 foreach (var line in lines.Skip(1))
                 {
@@ -223,6 +261,14 @@ namespace EtlDsl.Executor
                 }
             }
             return result;
+        }
+
+        private static void PrintRows(List<Dictionary<string, object>> rows)
+        {
+            Console.WriteLine("\n--- ETL OUTPUT ---");
+            if (!rows.Any()) { Console.WriteLine("No rows produced."); return; }
+            foreach (var row in rows)
+                Console.WriteLine(string.Join(", ", row.Select(kv => $"{kv.Key}={kv.Value}")));
         }
     }
 }

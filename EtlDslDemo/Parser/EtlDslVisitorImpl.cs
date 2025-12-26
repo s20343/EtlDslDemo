@@ -90,6 +90,28 @@ namespace EtlDsl.Executor
             });
             return null!;
         }
+        public override object VisitAggregateStatement(EtlDslParser.AggregateStatementContext ctx)
+        {
+            var agg = new AggregateOperation
+            {
+                Function = ctx.aggregationFunction().GetText(),
+                Expression = GetFullText(ctx.expression()),
+                TargetColumn = ctx.targetIdentifier().GetText(),
+                TargetType = ctx.type() != null ? ParseType(ctx.type().GetText()) : null
+            };
+
+            // Optional GROUP BY
+            if (ctx.groupByClause() != null)
+            {
+                agg.GroupByColumns = ctx.groupByClause().groupByItem()
+                    .Select(g => g.GetText())
+                    .ToList();
+            }
+
+            _currentTransform!.Operations.Add(agg);
+            return null!;
+        }
+
 
         // ---------------- Load ----------------
         public override object VisitLoad(EtlDslParser.LoadContext ctx)

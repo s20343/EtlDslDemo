@@ -5,20 +5,16 @@ using EtlDsl.Executor; //java -jar "C:\Users\ACER\Downloads\antlr4-4.13.1-comple
 
 // ---------------- 1️⃣ Define your DSL ----------------
 var dsl = @"
-PIPELINE TestAvgSimple VERSION 1.0
+PIPELINE TestAggregate VERSION 1.0
 
 EXTRACT CSV ""Data/sales.csv"" AS sales
 
 TRANSFORM {
-    GROUP BY sales.category
-    MAP SUM(sales.quantity) AS total_quantity
+    AGGREGATE SUM(sales.quantity) AS total_quantity GROUPBY sales.category
+    AGGREGATE AVG(sales.price) AS avg_price GROUPBY sales.category
 }
 
-
-LOAD SQL ""FactAvgSimple""
-
-
-
+LOAD SQL ""FactAggregate""
 
 
 ";
