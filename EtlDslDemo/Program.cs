@@ -5,15 +5,21 @@ using EtlDsl.Executor; //java -jar "C:\Users\ACER\Downloads\antlr4-4.13.1-comple
 
 // ---------------- 1️⃣ Define your DSL ----------------
 var dsl = @"
-PIPELINE TestComplex VERSION 1.0
+PIPELINE TestAvgSimple VERSION 1.0
 
 EXTRACT CSV ""Data/sales.csv"" AS sales
 
 TRANSFORM {
-    FILTER (sales.quantity * 2 + sales.price > 150 AND NOT sales.quantity < 5) OR sales.price > 300
+    GROUP BY sales.category
+    MAP SUM(sales.quantity) AS total_quantity
 }
 
-LOAD SQL ""FactComplex""
+
+LOAD SQL ""FactAvgSimple""
+
+
+
+
 
 ";
 
