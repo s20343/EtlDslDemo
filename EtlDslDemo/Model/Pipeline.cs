@@ -8,6 +8,4 @@ public class Pipeline
     public TransformStep Transform { get; set; }
     public LoadStep Load { get; set; }
     
-    public List<TransformStep> TransformSteps { get; set; } = new List<TransformStep>();
-
 }

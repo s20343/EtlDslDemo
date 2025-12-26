@@ -5,5 +5,5 @@ public enum DataType
     Int,
     Decimal,
     String,
-    Boolean
+    Boolean,
 }
