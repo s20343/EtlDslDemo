@@ -5,36 +5,23 @@ using EtlDsl.Executor; //java -jar "C:\Users\ACER\Downloads\antlr4-4.13.1-comple
 
 // ---------------- 1️⃣ Define your DSL ----------------
 string dsl = @"
-PIPELINE MultiSourceComplex VERSION 1.0
 
-EXTRACT CSV ""Data/sales.csv"" AS sales,
-        CSV ""Data/discount.csv"" AS discount
+
+PIPELINE MultiFailBlock VERSION 1.0
+
+EXTRACT CSV ""Data/sales.csv"" AS sales, ""Data/discount.csv"" AS discount
 
 TRANSFORM {
-
     sales {
-        MAP IF sales.quantity > 10 THEN sales.price * 1.2 ELSE sales.price TO adjusted_price
-        MAP IF sales.adjusted_price > 20 THEN ""HighValue"" ELSE ""Normal"" TO price_category
-        FILTER sales.quantity > 5
-        AGGREGATE SUM(sales.quantity) AS total_quantity GROUPBY sales.product
-        AGGREGATE AVG(sales.adjusted_price) AS avg_adjusted_price GROUPBY sales.product
+        MAP sales.unknown_field * 2 TO new_col
     }
-
-
     discount {
-        MAP IF discount.discountRate >= 0.1 THEN ""BigDiscount"" ELSE ""SmallDiscount"" TO discount_category
-        MAP IF discount.discountRate > 0 THEN discount.discountRate * 100 ELSE 0 TO discount_percentage
-        AGGREGATE SUM(discount.discountRate) AS total_discount
+        MAP discount.rate * 100 TO percent
     }
 }
 
-LOAD SQL ""FactMultiSourceComplex""
-
-
+LOAD SQL ""FactMultiFailBlock""
 ";
-
-
-
 
 
 // 2️⃣ Parse the DSL

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EtlDslDemo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+029615c149829b01b94a6592a9d2a802095ee673")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8e527b9bbe626544902b0f4d109e8d5c490b8796")]
 [assembly: System.Reflection.AssemblyProductAttribute("EtlDslDemo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EtlDslDemo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

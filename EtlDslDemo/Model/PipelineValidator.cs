@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using EtlDsl.Model;
 
@@ -16,146 +17,160 @@ public static class PipelineValidator
         if (pipeline.Load == null)
             throw new Exception("Pipeline must have a Load step.");
 
-        // Track known columns and their types
-        var knownColumns = new Dictionary<string, DataType?>();
+        // Track known columns globally
+        var knownColumns = new Dictionary<string, DataType?>(StringComparer.OrdinalIgnoreCase);
 
-        // 1. Initialize with extract columns
-        foreach (var col in GetColumnsFromSource(pipeline.Extract.Sources, pipeline.Extract.Alias))
+        // 1️⃣ Initialize with headers from CSV files (alias-qualified)
+        foreach (var src in pipeline.Extract.SourcesWithAlias)
         {
-            knownColumns[col.Name] = col.Type;
+            foreach (var col in GetColumnsFromCsv(src.Path, src.Alias))
+            {
+                knownColumns[col.Name] = col.Type;
+            }
         }
 
-        // 2. Validate Transforms
-        foreach (var op in pipeline.Transform.Operations)
+        // 2️⃣ Validate Source Blocks
+        if (pipeline.Transform.SourceBlocks != null)
         {
+            foreach (var block in pipeline.Transform.SourceBlocks)
+            {
+                ValidateOperations(block.Operations, knownColumns, block.SourceAlias);
+            }
+        }
+
+        // 3️⃣ Validate Global Operations (outside any block)
+        if (pipeline.Transform.Operations != null)
+        {
+            ValidateOperations(pipeline.Transform.Operations, knownColumns);
+        }
+    }
+
+    private static void ValidateOperations(
+        List<IOperation> operations,
+        Dictionary<string, DataType?> knownColumns,
+        string sourceAlias = null)
+    {
+        var localColumns = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var op in operations)
+        {
+            string target = op switch
+            {
+                MapOperation map => map.TargetColumn,
+                ConditionalMapOperation cond => cond.TargetColumn,
+                AggregateOperation agg => agg.TargetColumn,
+                _ => null
+            };
+
+            // Check duplicates in local scope
+            if (target != null)
+            {
+                string qualified = sourceAlias != null ? $"{sourceAlias}.{target}" : target;
+                if (localColumns.Contains(qualified))
+                    throw new Exception($"Duplicate column '{qualified}' in the same scope.");
+                localColumns.Add(qualified);
+            }
+
             switch (op)
             {
                 case MapOperation map:
-                    // For Map, we generally expect numeric if math operators are present, 
-                    // but let's keep it loose to allow string concatenation.
-                    ValidateExpressionColumns(map.Expression, knownColumns, expectedResultType: null);
-                    
-                    // Allow overwriting existing columns (common in ETL), or keep duplicate check if you prefer strictly new cols
-                    if (knownColumns.ContainsKey(map.TargetColumn))
-                         Console.WriteLine($"[Info] Overwriting column '{map.TargetColumn}'");
-                    
-                    knownColumns[map.TargetColumn] = map.TargetType;
+                    ValidateExpressionColumns(map.Expression, knownColumns, sourceAlias);
+                    knownColumns[sourceAlias != null ? $"{sourceAlias}.{map.TargetColumn}" : map.TargetColumn] = map.TargetType;
                     break;
 
                 case ConditionalMapOperation cond:
-                    // Condition must result in boolean
-                    ValidateExpressionColumns(cond.Condition, knownColumns, expectedResultType: DataType.Boolean);
-                    
-                    ValidateExpressionColumns(cond.TrueExpression, knownColumns, expectedResultType: cond.TargetType);
-                    ValidateExpressionColumns(cond.FalseExpression, knownColumns, expectedResultType: cond.TargetType);
-                    
-                    knownColumns[cond.TargetColumn] = cond.TargetType;
+                    ValidateExpressionColumns(cond.Condition, knownColumns, sourceAlias, DataType.Boolean);
+                    ValidateExpressionColumns(cond.TrueExpression, knownColumns, sourceAlias, cond.TargetType);
+                    ValidateExpressionColumns(cond.FalseExpression, knownColumns, sourceAlias, cond.TargetType);
+                    knownColumns[sourceAlias != null ? $"{sourceAlias}.{cond.TargetColumn}" : cond.TargetColumn] = cond.TargetType;
                     break;
 
                 case FilterOperation filter:
-                    // Filter condition must result in boolean
-                    ValidateExpressionColumns(filter.Condition, knownColumns, expectedResultType: DataType.Boolean);
+                    ValidateExpressionColumns(filter.Condition, knownColumns, sourceAlias, DataType.Boolean);
                     break;
 
                 case AggregateOperation agg:
-                    // Sum/Avg usually require numeric inputs
-                    bool isMathAgg = agg.Function is "SUM" or "AVG" or "MIN" or "MAX";
-                    ValidateExpressionColumns(agg.Expression, knownColumns, expectedResultType: isMathAgg ? DataType.Decimal : null);
+                    bool isNumericAgg = agg.Function is "SUM" or "AVG" or "MIN" or "MAX";
+                    ValidateExpressionColumns(agg.Expression, knownColumns, sourceAlias, isNumericAgg ? DataType.Decimal : null);
 
                     foreach (var col in agg.GroupByColumns)
                     {
-                        if (!knownColumns.ContainsKey(col))
-                            throw new Exception($"GroupBy column '{col}' does not exist.");
+                        string qualifiedCol = col.Contains('.') ? col : (sourceAlias != null ? $"{sourceAlias}.{col}" : col);
+                        if (!knownColumns.ContainsKey(qualifiedCol))
+                            throw new Exception($"GroupBy column '{qualifiedCol}' does not exist. Available: {string.Join(", ", knownColumns.Keys)}");
                     }
-                    knownColumns[agg.TargetColumn] = agg.TargetType;
-                    break;
 
-                default:
-                    // Skip unknown operations or throw
+                    knownColumns[sourceAlias != null ? $"{sourceAlias}.{agg.TargetColumn}" : agg.TargetColumn] = agg.TargetType;
                     break;
             }
         }
-        
-        // 3. (Optional) Validate that Load target type matches output
-        // Logic for SQL vs File, etc.
     }
 
-    private static void ValidateExpressionColumns(string expression, Dictionary<string, DataType?> knownColumns, DataType? expectedResultType)
+    private static void ValidateExpressionColumns(
+        string expression,
+        Dictionary<string, DataType?> knownColumns,
+        string sourceAlias = null,
+        DataType? expectedResultType = null)
     {
-        // 1. Check for Comparison Operators (> < = !)
-        // If these exist, the expression results in a Boolean, but the ATOMS are likely Numeric/String.
-        bool hasComparison = expression.Any(c => "<>=!".Contains(c));
+        if (string.IsNullOrWhiteSpace(expression)) return;
 
-        // 2. Tokenize (Split by operators to find columns)
         var tokens = expression.Split(
-            new[] { ' ', '+', '-', '*', '/', '(', ')', '<', '>', '=', '!', '&', '|', ',' }, 
+            new[] { ' ', '+', '-', '*', '/', '(', ')', '<', '>', '=', '!', '&', '|', ',' },
             StringSplitOptions.RemoveEmptyEntries
         );
 
         foreach (var token in tokens)
         {
-            // Skip Literals / Keywords
-            if (IsLiteral(token)) continue;
+            var cleanToken = token.Trim();
+            if (IsLiteral(cleanToken)) continue;
 
-            // Check Existence
-            if (!knownColumns.ContainsKey(token))
-                throw new Exception($"Column '{token}' does not exist in the pipeline context.");
+            // Resolve alias
+            string qualifiedToken = cleanToken.Contains('.') ? cleanToken : (sourceAlias != null ? $"{sourceAlias}.{cleanToken}" : cleanToken);
 
-            var colType = knownColumns[token];
+            if (!knownColumns.ContainsKey(qualifiedToken))
+                throw new Exception($"Validation Failed: Column '{cleanToken}' (resolved as '{qualifiedToken}') does not exist. Available columns: {string.Join(", ", knownColumns.Keys)}");
 
-            // --- SMART TYPE CHECKING ---
-
-            // CASE A: We expect a Boolean Result (like FILTER)
-            if (expectedResultType == DataType.Boolean)
+            var colType = knownColumns[qualifiedToken];
+            if (expectedResultType == DataType.Boolean && !HasComparisonOperators(expression))
             {
-                // If there is NO comparison operator (e.g., "FILTER sales.active"), 
-                // then the column itself MUST be boolean.
-                if (!hasComparison)
-                {
-                    if (colType != DataType.Boolean)
-                        throw new Exception($"Column '{token}' is {colType}, but a Boolean was expected for a direct logical check.");
-                }
-                // If there IS a comparison (e.g., "sales.price > 100"), 
-                // then the column IS ALLOWED to be Numeric/String. We do not enforce boolean on the column.
-            }
-
-            // CASE B: We expect a Numeric Result (like SUM or MAP price * qty)
-            else if (expectedResultType == DataType.Int || expectedResultType == DataType.Decimal)
-            {
-                // If the expression uses math operators, columns should generally be numeric
-                // (Simple check: if column is String/Bool, warn or fail)
-                if (colType == DataType.String || colType == DataType.Boolean)
-                {
-                     // Only throw if strictly creating a numeric target, though implicit conversion might exist
-                     // throw new Exception($"Column '{token}' is {colType}, but used in a Numeric calculation.");
-                }
+                if (colType != DataType.Boolean && colType != null)
+                    throw new Exception($"Column '{qualifiedToken}' is {colType}, but Boolean expected.");
             }
         }
     }
 
     private static bool IsLiteral(string token)
     {
-        if (decimal.TryParse(token, out _)) return true; // Number
-        if (token.StartsWith("\"") && token.EndsWith("\"")) return true; // String
-        if (token.Equals("TRUE", StringComparison.OrdinalIgnoreCase)) return true;
-        if (token.Equals("FALSE", StringComparison.OrdinalIgnoreCase)) return true;
-        if (token.Equals("AND", StringComparison.OrdinalIgnoreCase)) return true;
-        if (token.Equals("OR", StringComparison.OrdinalIgnoreCase)) return true;
-        if (token.Equals("NOT", StringComparison.OrdinalIgnoreCase)) return true;
-        return false;
+        if (string.IsNullOrWhiteSpace(token)) return true;
+        if (decimal.TryParse(token, out _)) return true;
+        if (token.StartsWith("\"") && token.EndsWith("\"")) return true;
+
+        var keywords = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "TRUE", "FALSE", "AND", "OR", "NOT", "NULL", "CONTAINS"
+        };
+        return keywords.Contains(token);
     }
 
-    // Simulated source columns
-    private static IEnumerable<(string Name, DataType? Type)> GetColumnsFromSource(IEnumerable<string> sources, string alias)
+    private static bool HasComparisonOperators(string expr)
     {
-        // In a real app, you would read the CSV header or Database Schema here.
-        // For this fake demo, we return hardcoded types matching your test data.
-        yield return ($"{alias}.id", DataType.Int);
-        yield return ($"{alias}.quantity", DataType.Int);
-        yield return ($"{alias}.price", DataType.Decimal);
-        yield return ($"{alias}.category", DataType.String);
-        
-        // Add extra columns if your tests need them
-        yield return ($"{alias}.active", DataType.Boolean); 
+        return expr.Any(c => "<>=!".Contains(c)) || expr.Contains("CONTAINS");
+    }
+
+    private static IEnumerable<(string Name, DataType? Type)> GetColumnsFromCsv(string path, string alias)
+    {
+        if (!File.Exists(path))
+            throw new Exception($"Extract source file not found: {path}");
+
+        using var reader = new StreamReader(path);
+        var headerLine = reader.ReadLine();
+        if (string.IsNullOrEmpty(headerLine)) yield break;
+
+        var headers = headerLine.Split(',');
+        foreach (var header in headers)
+        {
+            var cleanHeader = header.Trim().Trim('"');
+            yield return ($"{alias}.{cleanHeader}", DataType.Decimal); // default type
+        }
     }
 }
