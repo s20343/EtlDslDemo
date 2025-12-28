@@ -12,26 +12,80 @@ namespace EtlDsl.Executor
         public static void Run(Pipeline pipeline)
         {
             Console.WriteLine("\n--- Reading CSV ---");
-            var rows = ReadCsv(pipeline.Extract);
 
-            if (!rows.Any())
+            // 1️⃣ Read all extract sources into separate lists
+            var sourceRowsDict = new Dictionary<string, List<Dictionary<string, object>>>();
+            foreach (var src in pipeline.Extract.SourcesWithAlias)
             {
-                Console.WriteLine("No rows found in CSV files.");
-                return;
+                var rows = ReadCsv(src.Path, src.Alias);
+                sourceRowsDict[src.Alias] = rows;
+
+                Console.WriteLine($"Read {rows.Count} rows for {src.Alias}");
+                foreach (var row in rows)
+                    Console.WriteLine(string.Join(", ", row.Select(kv => $"{kv.Key}={kv.Value}")));
             }
 
-            Console.WriteLine($"Total rows read: {rows.Count}");
+            Console.WriteLine($"Total sources read: {sourceRowsDict.Count}");
             Console.WriteLine("\n--- Applying Transformations ---");
 
-            // Row-level transformations (MAP, ConditionalMap, FILTER)
-            var transformedRows = new List<Dictionary<string, object>>();
+            // 2️⃣ Apply per-source transform blocks
+            if (pipeline.Transform.SourceBlocks != null)
+            {
+                foreach (var block in pipeline.Transform.SourceBlocks)
+                {
+                    if (!sourceRowsDict.TryGetValue(block.SourceAlias, out var rowsForSource))
+                    {
+                        Console.WriteLine($"[Warn] Source alias '{block.SourceAlias}' not found for transform block.");
+                        continue;
+                    }
+
+                    // Apply row-level operations
+                    rowsForSource = ApplyOperations(rowsForSource, block.Operations);
+
+                    // Apply source-specific aggregates
+                    var sourceAggregates = block.Operations.OfType<AggregateOperation>().ToList();
+                    if (sourceAggregates.Any())
+                        rowsForSource = ApplyAggregations(rowsForSource, sourceAggregates, block.SourceAlias);
+
+                    sourceRowsDict[block.SourceAlias] = rowsForSource;
+                }
+            }
+
+            // 3️⃣ Apply global operations (operations not in source blocks)
+            if (pipeline.Transform.Operations != null && pipeline.Transform.Operations.Any())
+            {
+                foreach (var key in sourceRowsDict.Keys.ToList())
+                {
+                    sourceRowsDict[key] = ApplyOperations(sourceRowsDict[key], pipeline.Transform.Operations);
+
+                    // Apply global aggregates
+                    var globalAggregates = pipeline.Transform.Operations.OfType<AggregateOperation>().ToList();
+                    if (globalAggregates.Any())
+                        sourceRowsDict[key] = ApplyAggregations(sourceRowsDict[key], globalAggregates, key);
+                }
+            }
+
+            // 4️⃣ Print output per source
+            foreach (var kv in sourceRowsDict)
+            {
+                Console.WriteLine($"\n--- Output for source {kv.Key} ---");
+                PrintRows(kv.Value);
+            }
+        }
+
+        // ---------------- Row-level operations ----------------
+        private static List<Dictionary<string, object>> ApplyOperations(
+            List<Dictionary<string, object>> rows,
+            List<IOperation> operations)
+        {
+            var result = new List<Dictionary<string, object>>();
 
             foreach (var row in rows)
             {
                 var context = new Dictionary<string, object>(row);
                 bool filtered = false;
 
-                foreach (var op in pipeline.Transform.Operations)
+                foreach (var op in operations)
                 {
                     switch (op)
                     {
@@ -50,33 +104,27 @@ namespace EtlDsl.Executor
                             if (!passes) filtered = true;
                             break;
                     }
+
                     if (filtered) break;
                 }
 
                 if (!filtered)
-                    transformedRows.Add(context);
+                    result.Add(context);
             }
 
-            // ---------------- Aggregation ----------------
-            var aggregates = pipeline.Transform.Operations.OfType<AggregateOperation>().ToList();
-            if (aggregates.Any())
-            {
-                transformedRows = ApplyAggregations(transformedRows, aggregates);
-            }
-
-            // ---------------- Output ----------------
-            PrintRows(transformedRows);
+            return result;
         }
 
+        // ---------------- Aggregation ----------------
         private static List<Dictionary<string, object>> ApplyAggregations(
             List<Dictionary<string, object>> rows,
-            List<AggregateOperation> aggregates)
+            List<AggregateOperation> aggregates,
+            string sourceAlias)
         {
             var result = new List<Dictionary<string, object>>();
 
             foreach (var agg in aggregates)
             {
-                // Determine grouping
                 var groups = agg.GroupByColumns.Any()
                     ? rows.GroupBy(r => string.Join("|", agg.GroupByColumns.Select(c => r[c])))
                     : new[] { rows.GroupBy(_ => "ALL").First() };
@@ -85,11 +133,9 @@ namespace EtlDsl.Executor
                 {
                     var row = new Dictionary<string, object>();
 
-                    // Preserve GROUP BY columns
                     foreach (var col in agg.GroupByColumns)
                         row[col] = group.First()[col];
 
-                    // Evaluate the aggregate expression
                     var values = group.Select(r => Convert.ToDecimal(Evaluate(agg.Expression, r))).ToList();
 
                     decimal value = agg.Function switch
@@ -101,7 +147,8 @@ namespace EtlDsl.Executor
                         _ => throw new Exception("Unknown aggregate function")
                     };
 
-                    row[agg.TargetColumn] = ConvertType(value, agg.TargetType);
+                    // Prefix with source alias
+                    row[$"{sourceAlias}.{agg.TargetColumn}"] = ConvertType(value, agg.TargetType);
                     result.Add(row);
                 }
             }
@@ -115,7 +162,7 @@ namespace EtlDsl.Executor
             expr = expr.Trim();
             if (string.IsNullOrEmpty(expr)) return null;
 
-            // Parentheses handling
+            // Parentheses
             while (expr.Contains("("))
             {
                 int close = expr.IndexOf(')');
@@ -171,7 +218,7 @@ namespace EtlDsl.Executor
                 }
             }
 
-            // Arithmetic operators (respecting precedence)
+            // Arithmetic
             int mul = IndexOfTopLevelOperator(expr, "*");
             if (mul >= 0) return Convert.ToDecimal(Evaluate(expr[..mul], ctx)) * Convert.ToDecimal(Evaluate(expr[(mul + 1)..], ctx));
             int div = IndexOfTopLevelOperator(expr, "/");
@@ -208,7 +255,7 @@ namespace EtlDsl.Executor
             if (token.StartsWith("\"") && token.EndsWith("\"")) return token[1..^1];
             if (decimal.TryParse(token, NumberStyles.Any, CultureInfo.InvariantCulture, out var num)) return num;
             if (ctx.TryGetValue(token, out var value)) return value;
-            Console.WriteLine($"[Warn] Column '{token}' not found. Defaulting to 0.");
+            Console.WriteLine($"[DEBUG] Lookup failed for token '{token}'");
             return 0;
         }
 
@@ -233,39 +280,36 @@ namespace EtlDsl.Executor
         }
 
         // ---------------- CSV Reading ----------------
-        private static List<Dictionary<string, object>> ReadCsv(ExtractStep extract)
+        private static List<Dictionary<string, object>> ReadCsv(string path, string alias)
         {
             var result = new List<Dictionary<string, object>>();
-            foreach (var path in extract.Sources)
-            {
-                if (!File.Exists(path)) continue;
-                var lines = File.ReadAllLines(path);
-                if (lines.Length < 2) continue;
+            if (!File.Exists(path)) return result;
 
-                var headers = lines[0].Split(',');
-                foreach (var line in lines.Skip(1))
+            var lines = File.ReadAllLines(path);
+            if (lines.Length < 2) return result;
+
+            var headers = lines[0].Split(',');
+            foreach (var line in lines.Skip(1))
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+                var values = line.Split(',');
+                var row = new Dictionary<string, object>();
+                for (int i = 0; i < headers.Length; i++)
                 {
-                    if (string.IsNullOrWhiteSpace(line)) continue;
-                    var values = line.Split(',');
-                    var row = new Dictionary<string, object>();
-                    for (int i = 0; i < headers.Length; i++)
-                    {
-                        var key = $"{extract.Alias}.{headers[i].Trim()}";
-                        var val = i < values.Length ? values[i].Trim() : "";
-                        if (decimal.TryParse(val, NumberStyles.Any, CultureInfo.InvariantCulture, out var num))
-                            row[key] = num;
-                        else
-                            row[key] = val.Trim('"');
-                    }
-                    result.Add(row);
+                    var key = $"{alias}.{headers[i].Trim()}";
+                    var val = i < values.Length ? values[i].Trim() : "";
+                    if (decimal.TryParse(val, NumberStyles.Any, CultureInfo.InvariantCulture, out var num))
+                        row[key] = num;
+                    else
+                        row[key] = val.Trim('"');
                 }
+                result.Add(row);
             }
             return result;
         }
 
         private static void PrintRows(List<Dictionary<string, object>> rows)
         {
-            Console.WriteLine("\n--- ETL OUTPUT ---");
             if (!rows.Any()) { Console.WriteLine("No rows produced."); return; }
             foreach (var row in rows)
                 Console.WriteLine(string.Join(", ", row.Select(kv => $"{kv.Key}={kv.Value}")));

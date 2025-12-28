@@ -44,11 +44,11 @@ public interface IEtlDslVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitExtract([NotNull] EtlDslParser.ExtractContext context);
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="EtlDslParser.sourceList"/>.
+	/// Visit a parse tree produced by <see cref="EtlDslParser.extractSource"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitSourceList([NotNull] EtlDslParser.SourceListContext context);
+	Result VisitExtractSource([NotNull] EtlDslParser.ExtractSourceContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="EtlDslParser.sourceType"/>.
 	/// </summary>
@@ -127,6 +127,18 @@ public interface IEtlDslVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitTransform([NotNull] EtlDslParser.TransformContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.transformStatementOrBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTransformStatementOrBlock([NotNull] EtlDslParser.TransformStatementOrBlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="EtlDslParser.sourceTransformBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSourceTransformBlock([NotNull] EtlDslParser.SourceTransformBlockContext context);
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="EtlDslParser.transformStatement"/>.
 	/// </summary>

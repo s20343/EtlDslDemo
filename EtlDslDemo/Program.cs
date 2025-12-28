@@ -4,21 +4,37 @@ using EtlDsl.Model;
 using EtlDsl.Executor; //java -jar "C:\Users\ACER\Downloads\antlr4-4.13.1-complete.jar" -Dlanguage=CSharp -visitor -o Generated Grammar\EtlDsl.g4
 
 // ---------------- 1️⃣ Define your DSL ----------------
-var dsl = @"
+string dsl = @"
+PIPELINE MultiSourceComplex VERSION 1.0
 
-PIPELINE TestValid VERSION 1.0
-
-EXTRACT CSV ""Data/sales.csv"" AS sales
+EXTRACT CSV ""Data/sales.csv"" AS sales,
+        CSV ""Data/discount.csv"" AS discount
 
 TRANSFORM {
-    MAP sales.quantity * sales.price TO total
-    FILTER sales.price > 100
-    AGGREGATE SUM(total) AS sum_total GROUPBY sales.category
+
+    sales {
+        MAP IF sales.quantity > 10 THEN sales.price * 1.2 ELSE sales.price TO adjusted_price
+        MAP IF sales.adjusted_price > 20 THEN ""HighValue"" ELSE ""Normal"" TO price_category
+        FILTER sales.quantity > 5
+        AGGREGATE SUM(sales.quantity) AS total_quantity GROUPBY sales.product
+        AGGREGATE AVG(sales.adjusted_price) AS avg_adjusted_price GROUPBY sales.product
+    }
+
+
+    discount {
+        MAP IF discount.discountRate >= 0.1 THEN ""BigDiscount"" ELSE ""SmallDiscount"" TO discount_category
+        MAP IF discount.discountRate > 0 THEN discount.discountRate * 100 ELSE 0 TO discount_percentage
+        AGGREGATE SUM(discount.discountRate) AS total_discount
+    }
 }
 
-LOAD SQL ""FactValid""
+LOAD SQL ""FactMultiSourceComplex""
+
 
 ";
+
+
+
 
 
 // 2️⃣ Parse the DSL

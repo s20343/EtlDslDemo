@@ -60,17 +60,17 @@ public partial class EtlDslBaseListener : IEtlDslListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExtract([NotNull] EtlDslParser.ExtractContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.sourceList"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.extractSource"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterSourceList([NotNull] EtlDslParser.SourceListContext context) { }
+	public virtual void EnterExtractSource([NotNull] EtlDslParser.ExtractSourceContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.sourceList"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.extractSource"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitSourceList([NotNull] EtlDslParser.SourceListContext context) { }
+	public virtual void ExitExtractSource([NotNull] EtlDslParser.ExtractSourceContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EtlDslParser.sourceType"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -227,6 +227,30 @@ public partial class EtlDslBaseListener : IEtlDslListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitTransform([NotNull] EtlDslParser.TransformContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.transformStatementOrBlock"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTransformStatementOrBlock([NotNull] EtlDslParser.TransformStatementOrBlockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.transformStatementOrBlock"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTransformStatementOrBlock([NotNull] EtlDslParser.TransformStatementOrBlockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.sourceTransformBlock"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSourceTransformBlock([NotNull] EtlDslParser.SourceTransformBlockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.sourceTransformBlock"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSourceTransformBlock([NotNull] EtlDslParser.SourceTransformBlockContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EtlDslParser.transformStatement"/>.
 	/// <para>The default implementation does nothing.</para>

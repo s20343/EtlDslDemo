@@ -11,11 +11,11 @@ pipeline
 
 // ---------------- Extract ----------------
 extract
-    : EXTRACT sourceType sourceList AS targetIdentifier
+    : EXTRACT sourceType extractSource (COMMA extractSource)*
     ;
 
-sourceList
-    : STRING (COMMA STRING)*
+extractSource
+    : STRING AS IDENTIFIER
     ;
 
 sourceType
@@ -82,7 +82,16 @@ typeOrNull
 
 // ---------------- Transform ----------------
 transform
-    : TRANSFORM LBRACE transformStatement* RBRACE
+    : TRANSFORM LBRACE transformStatementOrBlock* RBRACE
+    ;
+
+transformStatementOrBlock
+    : transformStatement
+    | sourceTransformBlock
+    ;
+
+sourceTransformBlock
+    : IDENTIFIER LBRACE transformStatement* RBRACE
     ;
 
 transformStatement

@@ -1,5 +1,5 @@
 ﻿using Antlr4.Runtime;
-using Antlr4.Runtime.Misc; // 1️⃣ Required for Interval
+using Antlr4.Runtime.Misc;
 using EtlDsl.Model;
 using System;
 using System.Linq;
@@ -32,64 +32,115 @@ namespace EtlDsl.Executor
         // ---------------- Extract ----------------
         public override object VisitExtract(EtlDslParser.ExtractContext ctx)
         {
-            var sources = ctx.sourceList().STRING()
-                .Select(s => TrimQuotes(s.GetText()))
-                .ToList();
+            var extractStep = new ExtractStep();
 
-            _pipeline.Extract = new ExtractStep
+            foreach (var srcCtx in ctx.extractSource())
             {
-                Sources = sources,
-                Alias = ctx.targetIdentifier().GetText()
-            };
+                var path = TrimQuotes(srcCtx.STRING().GetText());
+                var alias = srcCtx.IDENTIFIER().GetText();
+
+                extractStep.SourcesWithAlias.Add(new ExtractSource
+                {
+                    Path = path,
+                    Alias = alias
+                });
+            }
+
+            _pipeline.Extract = extractStep;
             return null!;
         }
+        
 
         // ---------------- Transform ----------------
+        // EtlDslVisitorImpl.cs
         public override object VisitTransform(EtlDslParser.TransformContext ctx)
         {
             _currentTransform = new TransformStep();
             _pipeline.Transform = _currentTransform;
+            _pipeline.Transform.SourceBlocks = new List<SourceTransformBlock>(); // initialize
+
+            foreach (var stmt in ctx.transformStatementOrBlock())
+            {
+                if (stmt.sourceTransformBlock() != null)
+                {
+                    Visit(stmt.sourceTransformBlock());
+                }
+                else if (stmt.transformStatement() != null)
+                {
+                    var op = Visit(stmt.transformStatement()) as IOperation;
+                    if (op != null)
+                        _currentTransform.Operations.Add(op); // Add to global operations
+                }
+            }
+
+            return null!;
+        }
+
+        public override object VisitSourceTransformBlock(EtlDslParser.SourceTransformBlockContext ctx)
+        {
+            var block = new SourceTransformBlock
+            {
+                SourceAlias = ctx.IDENTIFIER().GetText(),
+                Operations = new List<IOperation>()
+            };
+
             foreach (var stmt in ctx.transformStatement())
             {
-                Visit(stmt);
+                var op = Visit(stmt) as IOperation;
+                if (op != null)
+                {
+                    // Auto-prefix the target column
+                    if (op is MapOperation map)
+                        map.TargetColumn = $"{block.SourceAlias}.{map.TargetColumn}";
+                    else if (op is ConditionalMapOperation cond)
+                        cond.TargetColumn = $"{block.SourceAlias}.{cond.TargetColumn}";
+                    //else if (op is AggregateOperation agg)
+                        //agg.TargetColumn = $"{block.SourceAlias}.{agg.TargetColumn}";
+
+                    block.Operations.Add(op);
+                }
             }
+
+            _pipeline.Transform.SourceBlocks.Add(block);
             return null!;
         }
 
-        public override object VisitFilterStatement(EtlDslParser.FilterStatementContext ctx)
-        {
-            // 2️⃣ FIX: Use GetFullText to preserve " AND ", " OR ", " NOT " spaces
-            _currentTransform!.Operations.Add(new FilterOperation
-            {
-                Condition = GetFullText(ctx.expression())
-            });
-            return null!;
-        }
 
+        // ---------------- Map ----------------
         public override object VisitMapStatement(EtlDslParser.MapStatementContext ctx)
         {
+            if (_currentTransform == null) return null!;
+
             if (ctx.IF() != null)
             {
-                _currentTransform!.Operations.Add(new ConditionalMapOperation
+                return new ConditionalMapOperation
                 {
-                    // 2️⃣ FIX: Use GetFullText here too
                     Condition = GetFullText(ctx.expression(0)),
                     TrueExpression = GetFullText(ctx.expression(1)),
                     FalseExpression = GetFullText(ctx.expression(2)),
                     TargetColumn = ctx.IDENTIFIER().GetText(),
                     TargetType = ctx.type() != null ? ParseType(ctx.type().GetText()) : null
-                });
-                return null!;
+                };
             }
 
-            _currentTransform!.Operations.Add(new MapOperation
+            return new MapOperation
             {
                 Expression = GetFullText(ctx.expression(0)),
                 TargetColumn = ctx.IDENTIFIER().GetText(),
                 TargetType = ctx.type() != null ? ParseType(ctx.type().GetText()) : null
-            });
-            return null!;
+            };
         }
+
+        // ---------------- Filter ----------------
+        public override object VisitFilterStatement(EtlDslParser.FilterStatementContext ctx)
+        {
+            return new FilterOperation
+            {
+                Condition = GetFullText(ctx.expression())
+            };
+        }
+
+        // ---------------- Aggregate ----------------
         public override object VisitAggregateStatement(EtlDslParser.AggregateStatementContext ctx)
         {
             var agg = new AggregateOperation
@@ -100,7 +151,6 @@ namespace EtlDsl.Executor
                 TargetType = ctx.type() != null ? ParseType(ctx.type().GetText()) : null
             };
 
-            // Optional GROUP BY
             if (ctx.groupByClause() != null)
             {
                 agg.GroupByColumns = ctx.groupByClause().groupByItem()
@@ -108,10 +158,8 @@ namespace EtlDsl.Executor
                     .ToList();
             }
 
-            _currentTransform!.Operations.Add(agg);
-            return null!;
+            return agg;
         }
-
 
         // ---------------- Load ----------------
         public override object VisitLoad(EtlDslParser.LoadContext ctx)
@@ -125,8 +173,6 @@ namespace EtlDsl.Executor
         }
 
         // ---------------- Helpers ----------------
-
-        // 3️⃣ THE MAGIC METHOD: Gets text with whitespace intact
         private string GetFullText(ParserRuleContext context)
         {
             if (context == null) return "";

@@ -1,4 +1,5 @@
-﻿quantity,price,product
-10,12,WidgetA
-5,7,WidgetB
-8,3,WidgetA
+﻿customerId,name,country,discountRate
+1,Alice,US,0.1
+2,Bob,UK,0.05
+3,Charlie,US,0.2
+4,David,US,0

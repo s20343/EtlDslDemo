@@ -51,15 +51,15 @@ public interface IEtlDslListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitExtract([NotNull] EtlDslParser.ExtractContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="EtlDslParser.sourceList"/>.
+	/// Enter a parse tree produced by <see cref="EtlDslParser.extractSource"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterSourceList([NotNull] EtlDslParser.SourceListContext context);
+	void EnterExtractSource([NotNull] EtlDslParser.ExtractSourceContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="EtlDslParser.sourceList"/>.
+	/// Exit a parse tree produced by <see cref="EtlDslParser.extractSource"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitSourceList([NotNull] EtlDslParser.SourceListContext context);
+	void ExitExtractSource([NotNull] EtlDslParser.ExtractSourceContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EtlDslParser.sourceType"/>.
 	/// </summary>
@@ -190,6 +190,26 @@ public interface IEtlDslListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitTransform([NotNull] EtlDslParser.TransformContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.transformStatementOrBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTransformStatementOrBlock([NotNull] EtlDslParser.TransformStatementOrBlockContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.transformStatementOrBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTransformStatementOrBlock([NotNull] EtlDslParser.TransformStatementOrBlockContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="EtlDslParser.sourceTransformBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSourceTransformBlock([NotNull] EtlDslParser.SourceTransformBlockContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="EtlDslParser.sourceTransformBlock"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSourceTransformBlock([NotNull] EtlDslParser.SourceTransformBlockContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="EtlDslParser.transformStatement"/>.
 	/// </summary>

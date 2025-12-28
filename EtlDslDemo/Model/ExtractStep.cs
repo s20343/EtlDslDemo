@@ -2,6 +2,11 @@
 
 public class ExtractStep
 {
-    public string Alias { get; set; }               // e.g., benchPositionFileStream
-    public List<string> Sources { get; set; }      // CSV or FLATFILE paths
+    // NEW (preferred)
+    public List<ExtractSource> SourcesWithAlias { get; set; } = new();
+
+    // OLD (kept for backward compatibility if needed)
+    public string Alias { get; set; }
+    public List<string> Sources { get; set; }
 }
+
